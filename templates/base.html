@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <title>{% block title %} {% endblock %}</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  </head>
+  <body>
+      <header> 
+        <a class="logo" href="{{ url_for('index')}}">Climate Air Monitor</a>
+	<div> 
+            <ul class="menu">
+            <li>
+                <a href="{{url_for('air_index')}}">Air Index</a>
+            </li>
+            </ul>
+        </div>
+      </header>
+    <div class="container">
+        {% block content %} {% endblock %}
+    </div>
+  </body>
+</html>
+
