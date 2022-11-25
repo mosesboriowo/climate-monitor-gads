@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} GADS Climate Air Pollution Monitor Index{% endblock %}</h1>
-    {% for post in posts %}
-        <a class="post" href="{{ url_for('post', post_id=post['id']) }}">
-            <h2>{{ post['title'] }}</h2>
-        </a>
-        <span class="timestamp">{{ post['created'] }}</span>
-        <hr>
-    {% endfor %}
+<h2>{% block title %} Measure Current Air Pollution Index {% endblock %}</h2>
+
+<form method="post">
+    <div class="form">
+        <label class="label" for="title">Name *</label>
+        <input type="text" name="title" placeholder="State" value="{{ request.form['name'] }}"></input>
+    </div>
+	
+	<div class="form">
+        <label class="label" for="title">Location *</label>
+        <input type="text" name="title" placeholder="State" value="{{ request.form['state'] }}"></input>
+    </div>
+
+    <div class="form">
+        <button type="submit" class="button">Submit</button>
+    </div>
+</form>
 {% endblock %}
