@@ -47,7 +47,7 @@ def result():
 		conn = http.client.HTTPSConnection("rapidweather.p.rapidapi.com")
 
 		headers = {
-			'X-RapidAPI-Key': "kindly-fetch-your-key-for-rapidweather-api",
+			'X-RapidAPI-Key': "f643f650d72mshc320da1d0f67a3bp1dad5bjsn7f8bf809aafa",
 			'X-RapidAPI-Host': "rapidweather.p.rapidapi.com"
 			}
 
@@ -66,16 +66,17 @@ def result():
 		result = pollution_index['list'][0]['main']['aqi']
 		
 		if result <= 3:
-			print('Ideal: The Air Pollution Index is low at your location')
+			msg = 'Ideal: The Air Pollution Index is low at your location'
 		elif 3 < result <= 6:
-			print('Warning:The Air Pollution is Moderate at your loction')
+			msg = 'Warning:The Air Pollution is Moderate at your loction'
 		elif 6 < result <=10:
-			print('At Risk: The Air Pollution Index is very high, take precaution')
+			msg = 'At Risk: The Air Pollution Index is very high, take precaution'
 		else:
-			print('Emergency: The Air Pollution Index is extreme today. Report status to appropriate local authorities ')
+			msg = 'Emergency: The Air Pollution Index is extreme today. Report status to appropriate local authorities '
+			#print()
 	
-		session.pop('state', None)
-		return render_template('air_index.html')
+		#session.pop('state', None)
+		return render_template('air_index.html', msg = msg)
 	else:
 		return render_template('index.html')
 	
