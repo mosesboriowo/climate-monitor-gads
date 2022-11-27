@@ -25,7 +25,7 @@ geofinder = Nominatim(user_agent="app") # initializing the library
 
 app = Flask(__name__) 
 
-app.secret_key = b'dtM#EYt?7$ZNr;fX/'
+app.secret_key = your-key-here
 
 @app.route('/')
 def home():
@@ -62,7 +62,7 @@ def result():
 		conn = http.client.HTTPSConnection("rapidweather.p.rapidapi.com")
 
 		headers = {
-			'X-RapidAPI-Key': "f643f650d72mshc320da1d0f67a3bp1dad5bjsn7f8bf809aafa",
+			'X-RapidAPI-Key': "kindly-fetch-your-key-for-rapidweather-api",
 			'X-RapidAPI-Host': "rapidweather.p.rapidapi.com"
 			}
 
