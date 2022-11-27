@@ -6,9 +6,12 @@
   </head>
   <body>
       <header> 
-        <a class="logo" href="{{ url_for('index')}}">Climate Air Monitor</a>
+        <a class="logo" href="{{ url_for('home')}}">Climate Air Monitor</a>
 	<div> 
             <ul class="menu">
+			<li>
+                <a href="{{url_for('main')}}">Measure</a>
+            </li>
             <li>
                 <a href="{{url_for('result')}}">Air Index</a>
             </li>

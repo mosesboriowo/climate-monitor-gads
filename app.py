@@ -8,12 +8,15 @@
 #env for the location and climate // pip install geopy && pip install meteostat 
 #Install Python 3.6 or higher 
 
+from os import statvfs_result
+
 from flask import Flask, jsonify, request, session, render_template, url_for, redirect, flash
-import logging
+from logging import Logger
 import json
 import http.client
 from logging import Logger
 from datetime import datetime
+from werkzeug.exceptions import abort
 
 from geopy.geocoders import Nominatim #importing a py geolocation library
 
@@ -22,17 +25,29 @@ geofinder = Nominatim(user_agent="app") # initializing the library
 
 app = Flask(__name__) 
 
-@app.route('/', methods=('GET', 'POST'))
+app.secret_key = b'dtM#EYt?7$ZNr;fX/'
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/main', methods=('GET', 'POST'))
 def main():
-	if request.method == 'POST'  and 'state' in request.form:
-		name = request.form['name']
-		Location = requestform['state']
-		session['state'] = request.form['state']
-		return redirect(url_for('result'))
+	if request.method == 'POST':
+		app.logger.debug('POST method executed successfully')
+		user = request.form['name']
+		state = request.form['state']
+
+		#session['state'] = request.form['state']
+		#app.logger.debug('POST method executed successfully')
+		if not user and state:
+			flash('One or more required fields is missing')
+		else:
+			return redirect(url_for('result'))
 	else:
-		flash('One or more required fields is missing')
-    return render_template('index.html')
+		app.logger.debug('GET method executed successfully')
 	
+	return render_template('main.html')
 	
 @app.route('/air_index.html')
 def result():
@@ -41,17 +56,17 @@ def result():
 		location = geofinder.geocode(state)
 	
 		longitude = location.longitude
-		latitude = location.latitude
+		latitude = location.latitude 
 		
 			
 		conn = http.client.HTTPSConnection("rapidweather.p.rapidapi.com")
 
 		headers = {
-			'X-RapidAPI-Key': "kindly-fetch-your-key-for-rapidweather-api",
+			'X-RapidAPI-Key': "f643f650d72mshc320da1d0f67a3bp1dad5bjsn7f8bf809aafa",
 			'X-RapidAPI-Host': "rapidweather.p.rapidapi.com"
 			}
 
-		conn.request("GET", "/data/2.5/air_pollution?lat="+ latitude + "&lon=" + longi + "", headers=headers)
+		conn.request("GET", "/data/2.5/air_pollution?lat="+ latitude + "&lon=" + longitude + "", headers=headers)
 
 		res = conn.getresponse()
 		data = res.read()
@@ -78,7 +93,7 @@ def result():
 		#session.pop('state', None)
 		return render_template('air_index.html', msg = msg)
 	else:
-		return render_template('index.html')
+		return render_template('404.html'), 404
 	
 
 
