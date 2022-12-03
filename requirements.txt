@@ -1,0 +1,6 @@
+Python==3.9.1
+Flask==2.0.1
+Werkzeug==2.0.1
+geopy
+meteostat
+requests
