@@ -22,10 +22,13 @@ from geopy.geocoders import Nominatim #importing a py geolocation library
 
 geofinder = Nominatim(user_agent="app") # initializing the library
 current_city = ""
+location = ""
+longitude = ""
+latitude =""
 
 app = Flask(__name__) 
 
-app.secret_key = your-key-here
+app.secret_key = b'dtM#EYt?7$ZNr;fX/'
 
 @app.route('/')
 def home():
@@ -65,20 +68,27 @@ def result():
 	else:
 		entry = '"'+ str(current_city)+'"'
 		app.logger.debug(entry)
-	
-		location = geofinder.geocode(entry, timeout=10000)
-
 		
-		longitude = location.longitude
-		latitude = location.latitude 
-
+		try:
+			global location
+			global longitude
+			global latitude
+			location = geofinder.geocode(entry, timeout=10000)
+			longitude = location.longitude
+			latitude = location.latitude 
+		except:
+			return render_template('404.html'), 404
+		
+		
+		
 		lon = str(longitude)
 		print(lon)
+		
 		lat = str(latitude)
 		print(lat)
 		
 			
-		response = requests.get("https://api.openweathermap.org/data/2.5/air_pollution?lat="+ lat + "&lon=" + lon + "&appid=your-openweather-api-key-here")
+		response = requests.get("https://api.openweathermap.org/data/2.5/air_pollution?lat="+ lat + "&lon=" + lon + "&appid=e2da51e94f4b77c6a156276dbcc8520a")
 		pollution_index = json.loads(response.text)
 		
 		print(pollution_index)
@@ -94,7 +104,7 @@ def result():
 			app.logger.debug(msg)
 			app.logger.debug('Ideal: The Air Pollution Index is low at your location')
 		elif result == 2:
-			msg = 'Fair:The Air Pollution is   at your loction'
+			msg = 'Fair:The Air Pollution is minimal at your location'
 			app.logger.debug('Fair:The Air Pollution is average at your location')
 			app.logger.debug(result)
 		elif result == 3:
@@ -118,4 +128,4 @@ def result():
 
 
 if __name__ == "__main__": 
-	app.run(debug=True)
+	app.run(host='0.0.0.0', port=80, debug=True)
