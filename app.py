@@ -28,7 +28,7 @@ latitude =""
 
 app = Flask(__name__) 
 
-app.secret_key = b'dtM#EYt?7$ZNr;fX/'
+app.secret_key = PRIVATE-KEY-HERE
 
 @app.route('/')
 def home():
@@ -88,7 +88,7 @@ def result():
 		print(lat)
 		
 			
-		response = requests.get("https://api.openweathermap.org/data/2.5/air_pollution?lat="+ lat + "&lon=" + lon + "&appid=e2da51e94f4b77c6a156276dbcc8520a")
+		response = requests.get("https://api.openweathermap.org/data/2.5/air_pollution?lat="+ lat + "&lon=" + lon + "&appid=YOUR-KEY-HERE")
 		pollution_index = json.loads(response.text)
 		
 		print(pollution_index)
