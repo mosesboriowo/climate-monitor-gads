@@ -1,0 +1,61 @@
+global:
+  scrape_interval: 15s # when Prometheus is pulling data from exporters etc
+  evaluation_interval: 30s # time between each evaluation of Prometheus' alerting rules
+
+scrape_configs:
+  - job_name: app.py   # your project name
+    static_configs:
+      - targets:
+        - app:8000
+
+alerting:
+  alertmanagers:
+    - name: alertmanager
+      address: http://localhost:9093
+      timeout: 10s
+
+  rules:
+    - alert: High CPU Usage
+      trigger:
+        expression: 'avg(irate(node_cpu_seconds_total{job="prometheus"}[5m])) > 80'
+      labels:
+        severity: warning
+      annotations:
+        summary: High CPU usage on Prometheus
+        description: Prometheus CPU usage is above 80%
+
+    - alert: Low CPU Usage
+      trigger:
+        expression: 'avg(irate(node_cpu_seconds_total{job="app"}[5m])) < 50'
+      labels:
+        severity: warning
+      annotations:
+        summary: Low CPU usage on App
+        description: App CPU usage is below 30%
+
+    - alert: Error Logs
+      trigger:
+        expression: 'sum(rate(app_error_logs_total[5m])) > 10'
+      labels:
+        severity: warning
+      annotations:
+        summary: Error logs on App
+        description: App has logged more than 10 errors in the last 5 minutes
+
+    - alert: Timeouts
+      trigger:
+        expression: 'sum(rate(app_timeouts_total[5m])) > 5'
+      labels:
+        severity: warning
+      annotations:
+        summary: Timeouts on App
+        description: App has timed out more than 5 times in the last 5 minutes
+
+    - alert: Consumption
+      trigger:
+        expression: 'sum(rate(app_consumption_total[5m])) > 100'
+      labels:
+        severity: warning
+      annotations:
+        summary: Consumption on App
+        description: App has consumed more than 100 resources in the last 5 minutes
