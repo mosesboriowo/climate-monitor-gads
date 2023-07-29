@@ -32,11 +32,11 @@ latitude =""
 
 app = Flask(__name__) 
 
-my_secrets = "749aac8ebf3b78c243ee7b994b4ca6aa"
+my_secrets = secrets.token_hex(16)
 
 # setting up redis as db
-#app.config['REDIS_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-#redis_client = redis.from_url(app.config['REDIS_URL'])
+app.config['REDIS_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+redis_client = redis.from_url(app.config['REDIS_URL'])
 
 # Define a Prometheus Counter
 requests_counter = Counter('http_requests_total', 'Total HTTP requests')
