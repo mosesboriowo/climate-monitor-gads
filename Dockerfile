@@ -1,8 +1,8 @@
-## dockerfile for Climate Monitor Project - GADS
+## docker file for Climate Monitor Project - GADS
 
-FROM python:3.9-alpine
-LABEL owner="Damie Banjoko"
-EXPOSE 80
+FROM python:3.8
+LABEL owner="Kenechukwu Nzute"
+EXPOSE 5000
 WORKDIR /climate-monitor-gads
 COPY ./ .
 RUN pip install -r requirements.txt
